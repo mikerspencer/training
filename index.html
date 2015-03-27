@@ -107,7 +107,7 @@ img {
 <h3>This document</h3>
 <p>This document has been written using <a href="http://rmarkdown.rstudio.com/">R markdown</a>, which I understand Mark Naylor showed you. R markdown is similar to <a href="http://ipython.org/notebook.html">Python notebooks</a>, both of which allow you to write documents and embed code and results within them. R markdown can write output to html, pdf or word formats. R markdown works best for me as an electronic lab notebook, so all my analysis happens within R markdown and I write comments on what I find as I go along. This way, when you’re writing that Nature paper and come back to find the code that generated your plot, it’s all available within the same document. Your hunting will be vastly reduced!</p>
 <p>Writing in markdown is really simple, plain text is just plain text. Here’s a handy cheat sheet for headings and highlighting: <a href="http://blog.rstudio.org/2014/08/01/the-r-markdown-cheat-sheet/" class="uri">http://blog.rstudio.org/2014/08/01/the-r-markdown-cheat-sheet/</a>. If you want to do something more complicated it will happily accept html code (if that’s what you’re wrapping it to) or LaTeX. The easiest way to write in R markdown is using the R IDE <a href="http://www.rstudio.com/products/rstudio/download/">RStudio</a>, this is freely available for Linux, Windows and Mac. It’s also installed on the school server, burn, open it by typing <em>rstudio</em> in a terminal.</p>
-<p>This R markdown html is hosted as a github page, you can view the repository here: <a href="https://github.com/mikerspencer/training/tree/gh-pages" class="uri">https://github.com/mikerspencer/training/tree/gh-pages</a> which also includes the raw markdown file (Rmd) this webpage is based on.</p>
+<p>This R markdown html is hosted as a github page, you can view the repository here: <a href="https://github.com/mikerspencer/training/tree/gh-pages" class="uri">https://github.com/mikerspencer/training/tree/gh-pages</a> which also includes the raw markdown file (Rmd) this webpage is created from.</p>
 <p>I’m going to cover a few things in this session and talk about specific tools, these are the ones I use. They’re certainly not the only ones available, but they are what I know. If you’d like to talk about other options, advantages and disadvantages drop by and see me in the Grant (rm 400) or <a href="http://www.ed.ac.uk/schools-departments/geosciences/people?indv=2920&amp;cw_xml=student.html">email</a>. So here’s what I’ll cover:</p>
 <ul>
 <li>File structure</li>
@@ -206,7 +206,7 @@ img {
 <span class="co"># -----------------------------------</span>
 <span class="kw">cd</span> ~/Picture/folder
 <span class="kw">sh</span> resizer.sh</code></pre>
-<p>I use bash to manage my Linux computers, so I can reinstall all programmes into a fresh build with the minimum of hassle. There’s an example script here: <a href="https://scottishsnow.wordpress.com/software/" class="uri">https://scottishsnow.wordpress.com/software/</a></p>
+<p>I use bash to manage my Linux computers, so I can reinstall all programmes into a fresh build with the minimum of hassle. There’s an example script here: <a href="https://scottishsnow.wordpress.com/software/" class="uri">https://scottishsnow.wordpress.com/software/</a>.</p>
 </div>
 <div id="programming" class="section level2">
 <h2>Programming</h2>
@@ -240,15 +240,15 @@ img {
 <div id="spatial-data" class="section level2">
 <h2>Spatial data</h2>
 <p>Spatial data has a big impact on lots of us working with environmental data, be that the location of our geology cross section, the distribution of snow cover in a catchment or where we conducted our social science questionnaires.</p>
-<p>You should already have covered GIS, but you can also work with spatial data from the command line or in your programming language of choice. As this workshop was originally targeted at GDAL I’ll also cover that tool</p>
+<p>You should already have covered GIS, but you can also work with spatial data from the command line or in your programming language of choice. As this workshop was originally targeted at GDAL I’ll also cover that tool.</p>
 <div id="gis" class="section level3">
 <h3>GIS</h3>
 <p>The big name in GIS is ESRI who produce ArcGIS/MAP. It’s a good thing to have on your cv, but it is prone to driving you mad with slow processing times and instability. For the same reasons as why I use open source programming tools, I also use open source GIS: <a href="http://qgis.org">QGIS</a> and <a href="http://grass.osgeo.org/">GRASS</a>. QGIS is a great desktop GIS that interfaces with most databases, it has a strong cartographic ability so you can make good looking maps. For heavy lifting I like to use GRASS, its capability for processing raster (grid) datasets is formidable, but there is a learning curve involved.</p>
-<p>The key is to get family with the language and concepts of GIS, don’t get bogged down in learning which buttons to press.</p>
+<p>The key is to get familiar with the language and concepts of GIS, don’t get bogged down in learning which buttons to press.</p>
 </div>
 <div id="gdal" class="section level3">
 <h3>GDAL</h3>
-<p>GDAL is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it with that.</p>
+<p>GDAL is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it.</p>
 <p>The example below use R, but it would not take long to convert these to another language. This example:</p>
 <ul>
 <li>Converts file types (hdf to tif) (gdal_translate)</li>
@@ -317,14 +317,14 @@ ptm =<span class="st"> </span><span class="kw">proc.time</span>()
 </div>
 <div id="programming-1" class="section level3">
 <h3>Programming</h3>
-<p>QGIS and GRASS (even ArcGIS) can be controlled with Python, and have a built in Python console. GRASS is fully fledged in the terminal, so your bash skills can come in handy! Both can also interact with R, QGIS via a plugin and GRASS via the R package <em>spgrass6</em>. I’ve written about using GRASS and R together here: <a href="https://scottishsnow.wordpress.com/2014/08/24/many-rastered-beast/" class="uri">https://scottishsnow.wordpress.com/2014/08/24/many-rastered-beast/</a>.</p>
-<p>You can also use R to undertake GIS like tasks, this gives you the advantage of having your data all ready for statistics, the drawback is that R reads data into RAM, so be careful how big the files are you open! I’ve written about using R for spatial work here: <a href="https://scottishsnow.wordpress.com/2015/02/24/uk-rare-snowmelt-estimation/" class="uri">https://scottishsnow.wordpress.com/2015/02/24/uk-rare-snowmelt-estimation/</a></p>
+<p>QGIS and GRASS (even ArcGIS) can be controlled with Python, and have a built in Python console. GRASS is fully fledged in the terminal, so your bash skills can come in handy! Both can also interact with R; QGIS via a plugin and GRASS via the R package <em>spgrass6</em>. I’ve written about using GRASS and R together here: <a href="https://scottishsnow.wordpress.com/2014/08/24/many-rastered-beast/" class="uri">https://scottishsnow.wordpress.com/2014/08/24/many-rastered-beast/</a>.</p>
+<p>You can also use R to undertake GIS like tasks, this gives you the advantage of having your data all ready for statistics, the drawback is that R reads data into RAM, so be careful how big the files are you open! I’ve written about using R for spatial work here: <a href="https://scottishsnow.wordpress.com/2015/02/24/uk-rare-snowmelt-estimation/" class="uri">https://scottishsnow.wordpress.com/2015/02/24/uk-rare-snowmelt-estimation/</a>. You can avoid the RAM R cost by using it in conjunction with GRASS.</p>
 </div>
 </div>
 <div id="databases" class="section level2">
 <h2>Databases</h2>
 <p>I store my primary dataset, the <a href="https://scottishsnow.wordpress.com/2014/04/09/snow-survey-of-great-britain/">Snow Survey of Great Britain</a> in a small database. It took me ages to get around to doing it, but it’s been really useful and I’m now able to do far more work than I could before. I recommend using a database if your data are complex, e.g. time series and or sites. Write a little script to write your incoming data to a database, then it’s one task that’s a lot easier each month (if that’s your sampling period). I’m doing some work for a PhD student in Crew on this at the moment, so please speak to me if you need any pointers.</p>
-<p>Have a look at using SQLite, there are packages for Python and R and with an extension you can link it to a GIS. You can even get a <a href="https://addons.mozilla.org/en-Us/firefox/addon/sqlite-manager/">plugin for Firefox</a> to query your data. Have a look at the example workflow at the bottom of this document to see one in action.</p>
+<p>Have a look at using SQLite, there are packages for Python and R and with an extension you can link it to a GIS. You can even get a <a href="https://addons.mozilla.org/en-Us/firefox/addon/sqlite-manager/">plugin for Firefox</a> to query your data. Have a look at the example workflow at the bottom of this document to see a database in action.</p>
 </div>
 <div id="writing" class="section level2">
 <h2>Writing</h2>
