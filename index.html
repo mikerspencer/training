@@ -81,15 +81,43 @@ img {
 
 <div id="TOC">
 <ul>
-<li><a href="#introduction">Introduction</a></li>
+<li><a href="#introduction">Introduction</a><ul>
+<li><a href="#this-document">This document</a></li>
+</ul></li>
+<li><a href="#backups">Backups</a></li>
 </ul>
 </div>
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>Welcome to the final session of the doctoral training course: numeracy, modelling and data management. This course was originally scheduled to cover <a href="http://www.gdal.org/">GDAL</a>, and it will, but as it has been postponed by a week we’ve decided to include a general wrap up of the course and show some example work flows.</p>
-<p>This document has been written using R markdown</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> rsync --delete --exclude=<span class="st">'/.*/'</span> --exclude=<span class="st">'/phd/data/in/'</span> -azv -e ssh /home/s1066252/phd s1066252@adder.geos.ed.ac.uk:/home/s1066252/</code></pre>
+<div id="this-document" class="section level3">
+<h3>This document</h3>
+<p>This document has been written using <a href="http://rmarkdown.rstudio.com/">R markdown</a>, which I understand Mark Naylor showed you. R markdown is similar to <a href="http://ipython.org/notebook.html">Python notebooks</a>, both of which allow you to write documents and embed code and results within them. R markdown can write output to html, pdf or word formats. R markdown works best for me as an electronic lab notebook, so all my analysis happens within R markdown and I write comments on what I find as I go along. This way, when you’re writing that Nature paper and come back to find the code that generated your plot, it’s all available within the same document. Your hunting will be vastly reduced!</p>
+<p>Writing in markdown is really simple, plain text is just plain text. Here’s a handy cheat sheet for headings and highlighting: <a href="http://blog.rstudio.org/2014/08/01/the-r-markdown-cheat-sheet/" class="uri">http://blog.rstudio.org/2014/08/01/the-r-markdown-cheat-sheet/</a>. If you want to do something more complicated it will happily accept html code (if that’s what you’re wrapping it to) or LaTeX. The easiest way to write in R markdown is using the R IDE <a href="http://www.rstudio.com/products/rstudio/download/">RStudio</a>, this is freely available for Linux, Windows and Mac. It’s also installed on the school server, burn, open it by typing <em>rstudio</em> in a terminal.</p>
+<p>This R markdown html is hosted as a github page, you can view the repository here: <a href="https://github.com/mikerspencer/training/tree/gh-pages" class="uri">https://github.com/mikerspencer/training/tree/gh-pages</a> which also includes the raw markdown file (Rmd) this webpage is based on.</p>
+<p>I’m going to cover a few things in this session and talk about specific tools, these are the ones I use. They’re certainly not the only ones available, but they are what I know. If you’d like to talk about other options, advantages and disadvantages drop by and see me in the Grant (rm 400) or <a href="http://www.ed.ac.uk/schools-departments/geosciences/people?indv=2920&amp;cw_xml=student.html">email</a>. So here’s what I’ll cover:</p>
+<ul>
+<li>Backups (rsync)</li>
+<li>Version control (git)</li>
+<li>Command line (bash)</li>
+<li>Programming (R)</li>
+<li>Spatial data
+<ul>
+<li>GIS (QGIS, GRASS)</li>
+<li>GDAL (R, GIS)</li>
+<li>Programming (R)</li>
+</ul></li>
+<li>Writing (markdown &amp; LaTeX)</li>
+</ul>
+<p>The key, for me, from these tools is that they help to make your research repeatable. This is really important holistically, but even on a personal level; if you need to make a few changes to a graph, table, paper… then all your analysis can be repeated with the click of a button - you don’t have to remember it all in your head!</p>
+</div>
+</div>
+<div id="backups" class="section level2">
+<h2>Backups</h2>
+<p>Backing up your work is crucial. If you lose everything pity from your colleagues will not help get it back. Hopefully most of you will be working on the school server (adder/m drive), this is backed up. Another option could be that you work on your desktop and backup to the work server. If you do this copying folders across is so 1995. Use backup software like <a href="http://en.wikipedia.org/wiki/Rsync">rsync</a> which scans for changes in files and only copies over what is needed. It’s very fast. Here’s an example that you would run in a bash terminal:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> rsync --delete --exclude=<span class="st">'/.*/'</span> --exclude=<span class="st">'/dir/temp/'</span> -azv -e ssh /home/s1066252 s1066252@adder.geos.ed.ac.uk:/home/s1066252/</code></pre>
+<p>The above example</p>
 </div>
 
 
