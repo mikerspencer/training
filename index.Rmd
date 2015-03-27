@@ -1,0 +1,26 @@
+---
+title: "Numeracy, Modelling and Data Management"
+author: "Mike Spencer"
+date: "27/03/2015"
+output:
+  html_document:
+    highlight: tango
+    theme: united
+    toc: yes
+---
+
+## Introduction
+
+Welcome to the final session of the doctoral training course: numeracy, modelling and data management. This course was originally scheduled to cover [GDAL](http://www.gdal.org/), and it will, but as it has been postponed by a week we've decided to include a general wrap up of the course and show some example work flows.
+
+This document has been written using [R markdown](http://rmarkdown.rstudio.com/), which I understand Mark Naylor showed you. R markdown is similar to [Python notebooks](http://ipython.org/notebook.html), both of which allow you to write documents and embed code and results within them. R markdown can write output to html, pdf or word formats. R markdown works best for me as an electronic lab notebook, so all my analysis happens within R markdown and I write comments on what I find as I go along. This way, when you're writing that Nature paper and come back to find the code that generated your plot, it's all available within the same document. Your hunting will be vastly reduced!
+
+Writing in markdown is really simple, plain text is just plain text. Here's a handy cheat sheet for headings and highlighting: http://blog.rstudio.org/2014/08/01/the-r-markdown-cheat-sheet/. If you want to do something more complicated it will happily accept html code (if that's what you're wrapping it to) or LaTeX.
+
+This R markdown html is hosted as a github page, you can view the repository here: 
+
+## Backups
+
+```{r backup, engine="bash", eval=F}
+sudo rsync --delete --exclude='/.*/' --exclude='/phd/data/in/' -azv -e ssh /home/s1066252/phd s1066252@adder.geos.ed.ac.uk:/home/s1066252/
+```
