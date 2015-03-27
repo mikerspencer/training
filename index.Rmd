@@ -23,6 +23,7 @@ This R markdown html is hosted as a github page, you can view the repository her
 
 I'm going to cover a few things in this session and talk about specific tools, these are the ones I use. They're certainly not the only ones available, but they are what I know. If you'd like to talk about other options, advantages and disadvantages drop by and see me in the Grant (rm 400) or [email](http://www.ed.ac.uk/schools-departments/geosciences/people?indv=2920&cw_xml=student.html). So here's what I'll cover:
 
+* File structures
 * Backups (rsync)
 * Version control (git)
 * Command line (bash)
@@ -35,6 +36,12 @@ I'm going to cover a few things in this session and talk about specific tools, t
 
 The key, for me, from these tools is that they help to make your research repeatable. This is really important holistically, but even on a personal level; if you need to make a few changes to a graph, table, paper... then all your analysis can be repeated with the click of a button - you don't have to remember it all in your head!
 
+
+## File structures
+
+I'm not going to say much about this, but do think about it. Having a consistent structure means you always know where to look for something. I wrote some ideas on my blog: https://scottishsnow.wordpress.com/2014/08/28/electronic-organisation-of-projects/
+
+
 ## Backups
 
 Backing up your work is crucial. If you lose everything pity from your colleagues will not help get it back. Hopefully most of you will be working on the school server (adder/m drive), this is backed up. Another option could be that you work on your desktop and backup to the work server. If you do this copying folders across is so 1995. Use backup software like [rsync](http://en.wikipedia.org/wiki/Rsync) which scans for changes in files and only copies over what is needed. It's very fast. Here's an example that you would run in a bash terminal:
@@ -43,4 +50,39 @@ Backing up your work is crucial. If you lose everything pity from your colleague
 sudo rsync --delete --exclude='/.*/' --exclude='/dir/temp/' -azv -e ssh /home/s1066252 s1066252@adder.geos.ed.ac.uk:/home/s1066252/
 ```
 
-The above example
+The above example doesn't just work within the school, you can also use it at home or wherever. Remember to change the student number to your own!
+
+
+## Version control
+
+When I started using Git it totally revolutionised the way I worked. When I changed documents or code I no longer had to remember to make a copy before a major revision, or hold the previous version in my head when I made a minor revision. Each previous version was managed with a tag saying what I'd done to it. My mind was free to concentrate on what I wanted to achieve, not on avoiding breaking what I had (and not being able to salvage it).
+
+There are a few version control software programmes out there. I use Git, it's very widely used and there are a couple of great web hosting facilities for your repositories. The most well known of these is [GitHub](https://github.com/), another is [Bitbucket](https://bitbucket.org/). I think Bitbucket has a better documented and laid out web interface, but this is likely personal preference. The real difference between the two is what you get for free. GitHub allows you to have unlimited collaborators and host webpages (like this one), but charges for private repositories. Bitbucket has free private repositories, but charges for more than 10 people in a team, although it seems this is waived if you sign up with your academic email address. I use GitHub and Bitbucket for different things, I mainly use GitHub for public work and Bitbucket for my research.
+
+You've had a dedicated session on Git, so I wont cover it in much detail here. I will say this is a great resource: http://rogerdudler.github.io/git-guide/, and the code below is what I use 99% of the time (anything else I have to look up):
+
+```{r git, engine="bash", eval=F}
+# -----------------------------------
+# Setting up
+# -----------------------------------
+# From scratch
+# Initialise your folder
+git init
+# Add the remote repo
+git add remote ...
+
+# Existing project, new computer
+git clone ...
+
+# -----------------------------------
+# Day to day
+# -----------------------------------
+# Change directory
+cd ~/working/directory/repo
+# Track files
+git add --all
+# Commit with message
+git commit -m "what I did"
+# Send to remote repo
+git push
+```

@@ -85,6 +85,7 @@ img {
 <li><a href="#this-document">This document</a></li>
 </ul></li>
 <li><a href="#backups">Backups</a></li>
+<li><a href="#version-control">Version control</a></li>
 </ul>
 </div>
 
@@ -117,7 +118,34 @@ img {
 <h2>Backups</h2>
 <p>Backing up your work is crucial. If you lose everything pity from your colleagues will not help get it back. Hopefully most of you will be working on the school server (adder/m drive), this is backed up. Another option could be that you work on your desktop and backup to the work server. If you do this copying folders across is so 1995. Use backup software like <a href="http://en.wikipedia.org/wiki/Rsync">rsync</a> which scans for changes in files and only copies over what is needed. It’s very fast. Here’s an example that you would run in a bash terminal:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> rsync --delete --exclude=<span class="st">'/.*/'</span> --exclude=<span class="st">'/dir/temp/'</span> -azv -e ssh /home/s1066252 s1066252@adder.geos.ed.ac.uk:/home/s1066252/</code></pre>
-<p>The above example</p>
+<p>The above example doesn’t just work within the school, you can also use it at home or wherever. Remember to change the student number to your own!</p>
+</div>
+<div id="version-control" class="section level2">
+<h2>Version control</h2>
+<p>When I started using Git it totally revolutionised the way I worked. When I changed documents or code I no longer had to remember to make a copy before a major revision, or hold the previous version in my head when I made a minor revision. Each previous version was managed with a tag saying what I’d done to it. My mind was free to concentrate on what I wanted to achieve, not on avoiding breaking what I had (and not being able to salvage it).</p>
+<p>There are a few version control software programmes out there. I use Git, it’s very widely used and there are a couple of great web hosting facilities for your repositories. The most well known of these is <a href="https://github.com/">GitHub</a>, another is <a href="https://bitbucket.org/">Bitbucket</a>. I think Bitbucket has a better documented and laid out web interface, but this is likely personal preference. The real difference between the two is what you get for free. GitHub allows you to have unlimited collaborators and host webpages (like this one), but charges for private repositories. Bitbucket has free private repositories, but charges for more than 10 people in a team, although it seems this is waived if you sign up with your academic email address. I use GitHub and Bitbucket for different things, I mainly use GitHub for public work and Bitbucket for my research.</p>
+<p>You’ve had a dedicated session on Git, so I wont cover it in much detail here. I will say this is a great resource: <a href="http://rogerdudler.github.io/git-guide/" class="uri">http://rogerdudler.github.io/git-guide/</a>, and the code below is what I use 99% of the time (anything else I have to look up):</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># -----------------------------------</span>
+<span class="co"># Setting up</span>
+<span class="co"># -----------------------------------</span>
+<span class="co"># From scratch</span>
+<span class="co"># Initialise your folder</span>
+<span class="kw">git</span> init
+<span class="co"># Add the remote repo</span>
+<span class="kw">git</span> add remote ...
+
+<span class="co"># Existing project, new computer</span>
+<span class="kw">git</span> clone ...
+
+<span class="co"># -----------------------------------</span>
+<span class="co"># Day to day</span>
+<span class="co"># -----------------------------------</span>
+<span class="co"># Track files</span>
+<span class="kw">git</span> add --all
+<span class="co"># Commit with message</span>
+<span class="kw">git</span> commit -m <span class="st">&quot;what I did&quot;</span>
+<span class="co"># Send to remote repo</span>
+<span class="kw">git</span> push</code></pre>
 </div>
 
 
