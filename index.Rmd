@@ -34,6 +34,7 @@ I'm going to cover a few things in this session and talk about specific tools, t
       + Programming (R)
 * Databases (SQLite)
 * Writing (markdown & LaTeX)
+* Example workflow
 
 The key, for me, from these tools is that they help to make your research repeatable. This is really important holistically, but even on a personal level; if you need to make a few changes to a graph, table, paper... then all your analysis can be repeated with the click of a button - you don't have to remember it all in your head!
 
@@ -138,18 +139,55 @@ cd ~/Picture/folder
 sh resizer.sh
 ```
 
-I use bash to manage my Linux computers, so I can reinstall all programmes into a fresh build with the minimum of hassle, there's an example script here: https://scottishsnow.wordpress.com/software/
+I use bash to manage my Linux computers, so I can reinstall all programmes into a fresh build with the minimum of hassle. There's an example script here: https://scottishsnow.wordpress.com/software/
 
 ## Programming
 
+You've seen a little programming in the section on bulk resizing images. Programming really is key to making your life easier. Any time you do the same thing more than a couple of times, you should probably write a script for it. This is for a number of reasons:
 
+* It makes your work repeatable by someone else
+* It reduces your chance of making a mistake
+* Datasets are getting bigger, the tools we use to analyse them need to improve to cope with the volume and complexity
+
+Most importantly...
+
+* It develops your skills and is far more interesting than repeating the same task over and over!
+
+Really, who wants to spend a week copy and pasting in a spreadsheet?
+
+My prefered tool is R, purely because it's the first language I was exposed to. Turns out it's really good for data analysis, statistics and visualisation. There are a lot of folk in the School who use Python, which is particularily strong at being part of a bigger workflow. You will find people who use Matlab, I don't recommend this. I'm sure it's great, but the downside is it's expensive; while the University of Edinburgh has a licence, everywhere you work may not. Personally, I'd rather invest time in a tool I know I can take with me. R and Python are both [open source](http://en.wikipedia.org/wiki/Open-source_software), which means there are no restrictions on their use. However, you may not get a choice of programming language if you adopt code from elsewhere.
+
+Good places to learn to code and get help are:
+
+* [stackoverflow](http://stackoverflow.com/)
+* [Coursera](https://www.coursera.org/specialization/jhudatascience/1?utm_medium=listingPage)
+* [Code Academy](http://www.codecademy.com/)
+* [Software Carpentry](http://software-carpentry.org/)
+* Blogs
+      + [R bloggers](http://www.r-bloggers.com/)
+      + [Volcan01010](http://all-geo.org/volcan01010/every-post-ever/)
+      + [scottishsnow](https://scottishsnow.wordpress.com/tag/r/)
+* Asking your peers!
 
 ## Spatial data
 
-### GIS (QGIS, GRASS)
+Spatial data has a big impact on lots of us working with environmental data, be that the location of our geology cross section, the distribution of snow cover in a catchment or where we conducted our social science questionnaires.
+
+You should already have covered GIS, but you can also work with spatial data from the command line or in your programming language of choice. As this workshop was originally targetted at GDAL I'll also cover that tool
+
+### GIS
+
+The big name in GIS is ESRI who produce ArcGIS/MAP. It's a good thing to have on your cv, but it is prone to driving you mad with slow processing times and instability. For the same reasons as why I use open source programming tools, I also use open source GIS: [QGIS](http://qgis.org) and [GRASS](http://grass.osgeo.org/). QGIS is a great desktop GIS that interfaces with most databases, it has a strong cartographic ability so you can make good looking maps. For heavy lifting I like to use GRASS, its capability for processing raster (grid) datasets is formidable, but there is a learning curve involved.
+
+The key is to get family with the language and concepts of GIS, don't get bogged down in learning which buttons to press.
+
 ### GDAL (R, GIS)
 ### Programming (R)
+
+QGIS and GRASS can both be controlled with Python, and have a built in Python console. GRASS is fully fledged in the terminal, so your bash skills can come in handy! Both can also interact with R.
 
 ## Databases
 
 ## Writing (markdown & LaTeX)
+
+## Example workflow
