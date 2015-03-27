@@ -90,12 +90,13 @@ img {
 <li><a href="#command-line">Command line</a></li>
 <li><a href="#programming">Programming</a></li>
 <li><a href="#spatial-data">Spatial data</a><ul>
-<li><a href="#gis-qgis-grass">GIS (QGIS, GRASS)</a></li>
-<li><a href="#gdal-r-gis">GDAL (R, GIS)</a></li>
-<li><a href="#programming-r">Programming (R)</a></li>
+<li><a href="#gis">GIS</a></li>
+<li><a href="#gdal">GDAL</a></li>
+<li><a href="#programming-1">Programming</a></li>
 </ul></li>
 <li><a href="#databases">Databases</a></li>
-<li><a href="#writing-markdown-latex">Writing (markdown &amp; LaTeX)</a></li>
+<li><a href="#writing">Writing</a></li>
+<li><a href="#example-workflow">Example workflow</a></li>
 </ul>
 </div>
 
@@ -122,6 +123,7 @@ img {
 </ul></li>
 <li>Databases (SQLite)</li>
 <li>Writing (markdown &amp; LaTeX)</li>
+<li>Example workflow</li>
 </ul>
 <p>The key, for me, from these tools is that they help to make your research repeatable. This is really important holistically, but even on a personal level; if you need to make a few changes to a graph, table, paper… then all your analysis can be repeated with the click of a button - you don’t have to remember it all in your head!</p>
 </div>
@@ -182,7 +184,7 @@ img {
 
 <span class="co"># Show the first few files of a directory (useful if it has many files)</span>
 <span class="kw">ls</span> <span class="kw">|</span> <span class="kw">head</span></code></pre>
-<p>You can also write programmes to do repetetive tasks, like resizing images (the below relies on ImageMagick)</p>
+<p>You can also write programmes to do repetitive tasks, like resizing images (the below relies on ImageMagick):</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># -----------------------------------</span>
 <span class="co"># Save the below in a file called resizer.sh in a folder of pictures you want to make smaller</span>
 <span class="co"># -----------------------------------</span>
@@ -219,7 +221,7 @@ img {
 <li>It develops your skills and is far more interesting than repeating the same task over and over!</li>
 </ul>
 <p>Really, who wants to spend a week copy and pasting in a spreadsheet?</p>
-<p>My prefered tool is R, purely because it’s the first language I was exposed to. Turns out it’s really good for data analysis, statistics and visualisation. There are a lot of folk in the School who use Python, which is particularily strong at being part of a bigger workflow. You will find people who use Matlab, I don’t recommend this. I’m sure it’s great, but the downside is it’s expensive; while the University of Edinburgh has a licence, everywhere you work may not. Personally, I’d rather invest time in a tool I know I can take with me. R and Python are both <a href="http://en.wikipedia.org/wiki/Open-source_software">open source</a>, which means there are no restrictions on their use. However, you may not get a choice of programming language if you adopt code from elsewhere.</p>
+<p>My preferred tool is R, purely because it’s the first language I was exposed to. Turns out it’s really good for data analysis, statistics and visualisation. There are a lot of folk in the School who use Python, which is particularly strong at being part of a bigger workflow. You will find people who use Matlab, I don’t recommend this. I’m sure it’s great, but the downside is it’s expensive; while the University of Edinburgh has a licence, everywhere you work may not. Personally, I’d rather invest time in a tool I know I can take with me. R and Python are both <a href="http://en.wikipedia.org/wiki/Open-source_software">open source</a>, which means there are no restrictions on their use. However, you may not get a choice of programming language if you adopt code from elsewhere.</p>
 <p>Good places to learn to code and get help are:</p>
 <ul>
 <li><a href="http://stackoverflow.com/">stackoverflow</a></li>
@@ -238,21 +240,109 @@ img {
 <div id="spatial-data" class="section level2">
 <h2>Spatial data</h2>
 <p>Spatial data has a big impact on lots of us working with environmental data, be that the location of our geology cross section, the distribution of snow cover in a catchment or where we conducted our social science questionnaires.</p>
-<div id="gis-qgis-grass" class="section level3">
-<h3>GIS (QGIS, GRASS)</h3>
+<p>You should already have covered GIS, but you can also work with spatial data from the command line or in your programming language of choice. As this workshop was originally targeted at GDAL I’ll also cover that tool</p>
+<div id="gis" class="section level3">
+<h3>GIS</h3>
+<p>The big name in GIS is ESRI who produce ArcGIS/MAP. It’s a good thing to have on your cv, but it is prone to driving you mad with slow processing times and instability. For the same reasons as why I use open source programming tools, I also use open source GIS: <a href="http://qgis.org">QGIS</a> and <a href="http://grass.osgeo.org/">GRASS</a>. QGIS is a great desktop GIS that interfaces with most databases, it has a strong cartographic ability so you can make good looking maps. For heavy lifting I like to use GRASS, its capability for processing raster (grid) datasets is formidable, but there is a learning curve involved.</p>
+<p>The key is to get family with the language and concepts of GIS, don’t get bogged down in learning which buttons to press.</p>
 </div>
-<div id="gdal-r-gis" class="section level3">
-<h3>GDAL (R, GIS)</h3>
+<div id="gdal" class="section level3">
+<h3>GDAL</h3>
+<p>GDAL is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it with that.</p>
+<p>The example below use R, but it would not take long to convert these to another language. This example:</p>
+<ul>
+<li>Converts file types (hdf to tif) (gdal_translate)</li>
+<li>Merges pairs of tiles together (gdal_merge)</li>
+<li>Reprojects merged tif to local projection (gdalwarp).</li>
+</ul>
+<p>The example below I developed to convert MODIS snow cover hdf files to tifs and merge the pairs of tiles together, finally converting them to OSGB grid. It loops through 14 years of daily observations by two satellites, processing ~ 18’000 raster images in total.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ---------------------------------------</span>
+<span class="co"># Raster merge script</span>
+<span class="co"># ---------------------------------------</span>
+ 
+<span class="co"># ---------------------------------------</span>
+<span class="co"># Set up</span>
+<span class="co"># ---------------------------------------</span>
+<span class="kw">setwd</span>(<span class="st">&quot;~/dir/MODIS/data/&quot;</span>)
+<span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;rgdal&quot;</span>, <span class="st">&quot;raster&quot;</span>, <span class="st">&quot;gdalUtils&quot;</span>))
+<span class="kw">library</span>(rgdal)
+<span class="kw">library</span>(gdalUtils)
+<span class="kw">library</span>(raster)
+ 
+<span class="co"># ---------------------------------------</span>
+<span class="co"># Script</span>
+<span class="co"># ---------------------------------------</span>
+ 
+<span class="co"># Find all directories</span>
+d =<span class="st"> </span><span class="kw">list.dirs</span>(<span class="st">&quot;.&quot;</span>, <span class="dt">recursive=</span>T, <span class="dt">full.names=</span>T)
+d =<span class="st"> </span>d[<span class="kw">nchar</span>(d)&gt;<span class="dv">10</span>]
+ 
+<span class="co"># Define subject area in target projection</span>
+coord =<span class="st"> </span><span class="kw">c</span>(<span class="dv">048900</span>, <span class="dv">527000</span>, <span class="dv">475000</span>, <span class="fl">1260953.928</span>)
+ 
+<span class="co"># Write hdf to single OSGB tif</span>
+<span class="co"># Set up a timer so you can estimate how long it will take (based on a subset)</span>
+ptm =<span class="st"> </span><span class="kw">proc.time</span>()
+<span class="co"># Loop through directories</span>
+<span class="kw">lapply</span>(d, function(i){
+   <span class="co"># Progress indicator</span>
+   <span class="kw">print</span>(i)
+   <span class="co"># File list</span>
+   f =<span class="st"> </span><span class="kw">list.files</span>(i, <span class="dt">full.names=</span>T, <span class="dt">recursive=</span>T)
+   <span class="co"># Check folder has enough files</span>
+   if(<span class="kw">length</span>(f)==<span class="dv">2</span>){
+   <span class="co"># Define new file name</span>
+   n =<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">substr</span>(f[<span class="dv">1</span>], <span class="dv">1</span>, <span class="dv">18</span>), <span class="kw">substr</span>(f[<span class="dv">1</span>], <span class="dv">28</span>, <span class="dv">34</span>))
+   <span class="co"># Process each folder</span>
+   for(j in <span class="dv">1</span>:<span class="dv">2</span>){
+      <span class="co"># Convert to tif</span>
+      <span class="co"># use gdal_info to check which hdf layer you need and adjust sd_index</span>
+      <span class="kw">gdal_translate</span>(f[j], <span class="kw">paste0</span>(n, j, <span class="st">&quot;.tif&quot;</span>), <span class="dt">sd_index=</span><span class="dv">1</span>)
+   }
+   <span class="co"># Merge</span>
+   <span class="kw">system</span>(<span class="kw">paste0</span>(<span class="st">&quot;gdal_merge.py &quot;</span>, <span class="kw">paste0</span>(n, <span class="dv">1</span>, <span class="st">&quot;.tif&quot;</span>), <span class="st">&quot; &quot;</span>, <span class="kw">paste0</span>(n, <span class="dv">2</span>, <span class="st">&quot;.tif&quot;</span>), <span class="st">&quot; -o &quot;</span>, <span class="kw">paste0</span>(n, <span class="st">&quot;.tif&quot;</span>)))
+   <span class="co"># Reproject to OSGB and clip to subject area</span>
+   <span class="kw">gdalwarp</span>(<span class="kw">paste0</span>(n, <span class="st">&quot;.tif&quot;</span>), <span class="kw">paste0</span>(n, <span class="st">&quot;OSGB&quot;</span>, <span class="st">&quot;.tif&quot;</span>), <span class="dt">s_srs=</span><span class="st">&quot;+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +a=6371007.181 +b=6371007.181 +units=m +no_defs&quot;</span>, <span class="dt">t_srs=</span><span class="st">&quot;EPSG:27700&quot;</span>, <span class="dt">srcnodata=</span>-<span class="dv">3000</span>, <span class="dt">dstnodata=</span>-<span class="dv">3000</span>, <span class="dt">te=</span>coord)
+   <span class="co"># Delete mid step tifs</span>
+   f =<span class="st"> </span><span class="kw">list.files</span>(i, <span class="dt">full.names=</span>T, <span class="dt">recursive=</span>T, <span class="dt">pattern=</span><span class="st">&quot;tif&quot;</span>)
+   <span class="co"># Vary this depending on your directory length and choice of file names</span>
+   f =<span class="st"> </span>f[<span class="kw">nchar</span>(f)&lt;<span class="dv">31</span>]
+   <span class="kw">file.remove</span>(f)
+   } else {
+      <span class="kw">print</span>(<span class="st">&quot;no data&quot;</span>)
+   }
+})
+<span class="kw">proc.time</span>() -<span class="st"> </span>ptm
+<span class="kw">rm</span>(ptm)</code></pre>
 </div>
-<div id="programming-r" class="section level3">
-<h3>Programming (R)</h3>
+<div id="programming-1" class="section level3">
+<h3>Programming</h3>
+<p>QGIS and GRASS (even ArcGIS) can be controlled with Python, and have a built in Python console. GRASS is fully fledged in the terminal, so your bash skills can come in handy! Both can also interact with R, QGIS via a plugin and GRASS via the R package <em>spgrass6</em>. I’ve written about using GRASS and R together here: <a href="https://scottishsnow.wordpress.com/2014/08/24/many-rastered-beast/" class="uri">https://scottishsnow.wordpress.com/2014/08/24/many-rastered-beast/</a>.</p>
+<p>You can also use R to undertake GIS like tasks, this gives you the advantage of having your data all ready for statistics, the drawback is that R reads data into RAM, so be careful how big the files are you open! I’ve written about using R for spatial work here: <a href="https://scottishsnow.wordpress.com/2015/02/24/uk-rare-snowmelt-estimation/" class="uri">https://scottishsnow.wordpress.com/2015/02/24/uk-rare-snowmelt-estimation/</a></p>
 </div>
 </div>
 <div id="databases" class="section level2">
 <h2>Databases</h2>
+<p>I store my primary dataset, the <a href="https://scottishsnow.wordpress.com/2014/04/09/snow-survey-of-great-britain/">Snow Survey of Great Britain</a> in a small database. It took me ages to get around to doing it, but it’s been really useful and I’m now able to do far more work than I could before. I recommend using a database if your data are complex, e.g. time series and or sites. Write a little script to write your incoming data to a database, then it’s one task that’s a lot easier each month (if that’s your sampling period). I’m doing some work for a PhD student in Crew on this at the moment, so please speak to me if you need any pointers.</p>
+<p>Have a look at using SQLite, there are packages for Python and R and with an extension you can link it to a GIS. You can even get a <a href="https://addons.mozilla.org/en-Us/firefox/addon/sqlite-manager/">plugin for Firefox</a> to query your data. Have a look at the example workflow at the bottom of this document to see one in action.</p>
 </div>
-<div id="writing-markdown-latex" class="section level2">
-<h2>Writing (markdown &amp; LaTeX)</h2>
+<div id="writing" class="section level2">
+<h2>Writing</h2>
+<p>Science isn’t complete until you communicate it. As the process evolves, there are many different mediums available to us (blogs, papers, magazines…), but as PhD students we will always have to produce a thesis! Having written using Word for many years of undergrad and employment, it’s been a breath of fresh air using <a href="en.wikipedia.org/wiki/LaTeX">LaTeX</a> for my written work since beginning my PhD. It takes the stress out of structuring your documents and is much quicker to write as you’re not distracted by how it looks. There’s a bit of a learning curve, but it’s well worth it.</p>
+<p>As I mentioned earlier, try and complete your data analysis in R markdown or Python notebooks. It will be a lot easier when you review what you’ve done.</p>
+<p>Consider keeping a blog, it helps you write and it’s a good place to record things when you figure out something new. In the bigger picture they’re a good place to advertise papers as well!</p>
+</div>
+<div id="example-workflow" class="section level2">
+<h2>Example workflow</h2>
+<p>Finally, I’m going to point you to an example workflow. This is something I did as part of my blog for science outreach. It:</p>
+<ul>
+<li>Takes monthly weather data from the Met Office website</li>
+<li>Rearranges the files</li>
+<li>Writes to a database</li>
+<li>Makes some exploratory analysis plots</li>
+<li>Generates correlations</li>
+</ul>
+<p>You can view the results here: <a href="https://scottishsnow.wordpress.com/2014/09/19/sept-weather/">UK Sept weather improving?</a>, <a href="https://scottishsnow.wordpress.com/2014/09/19/scottish-winter-weather/">Scottish winter weather</a> and <a href="https://scottishsnow.wordpress.com/2015/03/20/tapply-on-steroids-by-climate-trends-in-scottish-seasons/">Climate trends in Scottish seasons</a>. Most importantly, the code to do all the above is available on <a href="https://bitbucket.org/mikerspencer/uk_climate">Bitbucket</a>. So get stuck in and start cloning!</p>
 </div>
 
 

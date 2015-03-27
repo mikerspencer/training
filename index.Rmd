@@ -113,7 +113,7 @@ ls
 ls | head
 ```
 
-You can also write programmes to do repetetive tasks, like resizing images (the below relies on ImageMagick)
+You can also write programmes to do repetitive tasks, like resizing images (the below relies on ImageMagick):
 
 ```{r bash images, engine="bash", eval=F}
 # -----------------------------------
@@ -155,7 +155,7 @@ Most importantly...
 
 Really, who wants to spend a week copy and pasting in a spreadsheet?
 
-My prefered tool is R, purely because it's the first language I was exposed to. Turns out it's really good for data analysis, statistics and visualisation. There are a lot of folk in the School who use Python, which is particularily strong at being part of a bigger workflow. You will find people who use Matlab, I don't recommend this. I'm sure it's great, but the downside is it's expensive; while the University of Edinburgh has a licence, everywhere you work may not. Personally, I'd rather invest time in a tool I know I can take with me. R and Python are both [open source](http://en.wikipedia.org/wiki/Open-source_software), which means there are no restrictions on their use. However, you may not get a choice of programming language if you adopt code from elsewhere.
+My preferred tool is R, purely because it's the first language I was exposed to. Turns out it's really good for data analysis, statistics and visualisation. There are a lot of folk in the School who use Python, which is particularly strong at being part of a bigger workflow. You will find people who use Matlab, I don't recommend this. I'm sure it's great, but the downside is it's expensive; while the University of Edinburgh has a licence, everywhere you work may not. Personally, I'd rather invest time in a tool I know I can take with me. R and Python are both [open source](http://en.wikipedia.org/wiki/Open-source_software), which means there are no restrictions on their use. However, you may not get a choice of programming language if you adopt code from elsewhere.
 
 Good places to learn to code and get help are:
 
@@ -173,7 +173,7 @@ Good places to learn to code and get help are:
 
 Spatial data has a big impact on lots of us working with environmental data, be that the location of our geology cross section, the distribution of snow cover in a catchment or where we conducted our social science questionnaires.
 
-You should already have covered GIS, but you can also work with spatial data from the command line or in your programming language of choice. As this workshop was originally targetted at GDAL I'll also cover that tool
+You should already have covered GIS, but you can also work with spatial data from the command line or in your programming language of choice. As this workshop was originally targeted at GDAL I'll also cover that tool
 
 ### GIS
 
@@ -194,7 +194,7 @@ The example below use R, but it would not take long to convert these to another 
 The example below I developed to convert MODIS snow cover hdf files to tifs and merge the pairs of tiles together, finally converting them to OSGB grid. It loops through 14 years of daily observations by two satellites, processing ~ 
 18'000 raster images in total.
 
-```{r gdal merge, eval=F}
+```{r gdal, eval=F}
 # ---------------------------------------
 # Raster merge script
 # ---------------------------------------
@@ -255,7 +255,7 @@ proc.time() - ptm
 rm(ptm)
 ```
 
-### Programming (R)
+### Programming
 
 QGIS and GRASS (even ArcGIS) can be controlled with Python, and have a built in Python console. GRASS is fully fledged in the terminal, so your bash skills can come in handy! Both can also interact with R, QGIS via a plugin and GRASS via the R package *spgrass6*. I've written about using GRASS and R together here: https://scottishsnow.wordpress.com/2014/08/24/many-rastered-beast/.
 
@@ -267,6 +267,22 @@ I store my primary dataset, the [Snow Survey of Great Britain](https://scottishs
 
 Have a look at using SQLite, there are packages for Python and R and with an extension you can link it to a GIS. You can even get a [plugin for Firefox](https://addons.mozilla.org/en-Us/firefox/addon/sqlite-manager/) to query your data. Have a look at the example workflow at the bottom of this document to see one in action.
 
-## Writing (markdown & LaTeX)
+## Writing
+
+Science isn't complete until you communicate it. As the process evolves, there are many different mediums available to us (blogs, papers, magazines...), but as PhD students we will always have to produce a thesis! Having written using Word for many years of undergrad and employment, it's been a breath of fresh air using [LaTeX](en.wikipedia.org/wiki/LaTeX) for my written work since beginning my PhD. It takes the stress out of structuring your documents and is much quicker to write as you're not distracted by how it looks. There's a bit of a learning curve, but it's well worth it.
+
+As I mentioned earlier, try and complete your data analysis in R markdown or Python notebooks. It will be a lot easier when you review what you've done.
+
+Consider keeping a blog, it helps you write and it's a good place to record things when you figure out something new. In the bigger picture they're a good place to advertise papers as well!
 
 ## Example workflow
+
+Finally, I'm going to point you to an example workflow. This is something I did as part of my blog for science outreach. It:
+
+* Takes monthly weather data from the Met Office website
+* Rearranges the files
+* Writes to a database
+* Makes some exploratory analysis plots
+* Generates correlations
+
+You can view the results here: [UK Sept weather improving?](https://scottishsnow.wordpress.com/2014/09/19/sept-weather/), [Scottish winter weather](https://scottishsnow.wordpress.com/2014/09/19/scottish-winter-weather/) and [Climate trends in Scottish seasons](https://scottishsnow.wordpress.com/2015/03/20/tapply-on-steroids-by-climate-trends-in-scottish-seasons/). Most importantly, the code to do all the above is available on [Bitbucket](https://bitbucket.org/mikerspencer/uk_climate). So get stuck in and start cloning!
