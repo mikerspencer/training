@@ -84,8 +84,18 @@ img {
 <li><a href="#introduction">Introduction</a><ul>
 <li><a href="#this-document">This document</a></li>
 </ul></li>
+<li><a href="#file-structure">File structure</a></li>
 <li><a href="#backups">Backups</a></li>
 <li><a href="#version-control">Version control</a></li>
+<li><a href="#command-line">Command line</a></li>
+<li><a href="#programming">Programming</a></li>
+<li><a href="#spatial-data">Spatial data</a><ul>
+<li><a href="#gis-qgis-grass">GIS (QGIS, GRASS)</a></li>
+<li><a href="#gdal-r-gis">GDAL (R, GIS)</a></li>
+<li><a href="#programming-r">Programming (R)</a></li>
+</ul></li>
+<li><a href="#databases">Databases</a></li>
+<li><a href="#writing-markdown-latex">Writing (markdown &amp; LaTeX)</a></li>
 </ul>
 </div>
 
@@ -99,6 +109,7 @@ img {
 <p>This R markdown html is hosted as a github page, you can view the repository here: <a href="https://github.com/mikerspencer/training/tree/gh-pages" class="uri">https://github.com/mikerspencer/training/tree/gh-pages</a> which also includes the raw markdown file (Rmd) this webpage is based on.</p>
 <p>I’m going to cover a few things in this session and talk about specific tools, these are the ones I use. They’re certainly not the only ones available, but they are what I know. If you’d like to talk about other options, advantages and disadvantages drop by and see me in the Grant (rm 400) or <a href="http://www.ed.ac.uk/schools-departments/geosciences/people?indv=2920&amp;cw_xml=student.html">email</a>. So here’s what I’ll cover:</p>
 <ul>
+<li>File structure</li>
 <li>Backups (rsync)</li>
 <li>Version control (git)</li>
 <li>Command line (bash)</li>
@@ -109,10 +120,15 @@ img {
 <li>GDAL (R, GIS)</li>
 <li>Programming (R)</li>
 </ul></li>
+<li>Databases (SQLite)</li>
 <li>Writing (markdown &amp; LaTeX)</li>
 </ul>
 <p>The key, for me, from these tools is that they help to make your research repeatable. This is really important holistically, but even on a personal level; if you need to make a few changes to a graph, table, paper… then all your analysis can be repeated with the click of a button - you don’t have to remember it all in your head!</p>
 </div>
+</div>
+<div id="file-structure" class="section level2">
+<h2>File structure</h2>
+<p>I’m not going to say much about this, but do think about it. Having a consistent structure means you always know where to look for something. I wrote some ideas on my blog: <a href="https://scottishsnow.wordpress.com/2014/08/28/electronic-organisation-of-projects/" class="uri">https://scottishsnow.wordpress.com/2014/08/28/electronic-organisation-of-projects/</a></p>
 </div>
 <div id="backups" class="section level2">
 <h2>Backups</h2>
@@ -123,6 +139,7 @@ img {
 <div id="version-control" class="section level2">
 <h2>Version control</h2>
 <p>When I started using Git it totally revolutionised the way I worked. When I changed documents or code I no longer had to remember to make a copy before a major revision, or hold the previous version in my head when I made a minor revision. Each previous version was managed with a tag saying what I’d done to it. My mind was free to concentrate on what I wanted to achieve, not on avoiding breaking what I had (and not being able to salvage it).</p>
+<p>Anything you write in plain text and change should be managed in version control. Most importantly this includes programming code and LaTeX documents. A tip for the latter is put each sentence on a new line, it will make it easier to track what changes. So long as you don’t leave empty lines LaTeX will wrap these all to the same paragraph.</p>
 <p>There are a few version control software programmes out there. I use Git, it’s very widely used and there are a couple of great web hosting facilities for your repositories. The most well known of these is <a href="https://github.com/">GitHub</a>, another is <a href="https://bitbucket.org/">Bitbucket</a>. I think Bitbucket has a better documented and laid out web interface, but this is likely personal preference. The real difference between the two is what you get for free. GitHub allows you to have unlimited collaborators and host webpages (like this one), but charges for private repositories. Bitbucket has free private repositories, but charges for more than 10 people in a team, although it seems this is waived if you sign up with your academic email address. I use GitHub and Bitbucket for different things, I mainly use GitHub for public work and Bitbucket for my research.</p>
 <p>You’ve had a dedicated session on Git, so I wont cover it in much detail here. I will say this is a great resource: <a href="http://rogerdudler.github.io/git-guide/" class="uri">http://rogerdudler.github.io/git-guide/</a>, and the code below is what I use 99% of the time (anything else I have to look up):</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># -----------------------------------</span>
@@ -140,12 +157,75 @@ img {
 <span class="co"># -----------------------------------</span>
 <span class="co"># Day to day</span>
 <span class="co"># -----------------------------------</span>
+<span class="co"># Change directory</span>
+<span class="kw">cd</span> ~/working/directory/repo
 <span class="co"># Track files</span>
 <span class="kw">git</span> add --all
 <span class="co"># Commit with message</span>
 <span class="kw">git</span> commit -m <span class="st">&quot;what I did&quot;</span>
 <span class="co"># Send to remote repo</span>
 <span class="kw">git</span> push</code></pre>
+</div>
+<div id="command-line" class="section level2">
+<h2>Command line</h2>
+<p>If you’re working with lots of files or big ones the terminal is your friend. You’ve already used it for managing your version control repos and running backups, but it can do so much more. Here are some examples you might not have covered previously:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Download data from a remote ftp</span>
+<span class="co"># This takes files that match the h17v0 string, but that have the number 2 or 3 afterwards.</span>
+<span class="co"># Actual examples for downloading MODIS snow cover satellite images for Scotland.</span>
+<span class="kw">lftp</span> -c <span class="st">'open -e &quot;mirror -I *h17v0[23]*hdf . .&quot; ftp://n5eil01u.ecs.nsidc.org/SAN/MOSA/MYD10A1.005/'</span>
+
+<span class="co"># New directory</span>
+<span class="kw">mkdir</span> test
+
+<span class="co"># List files in a directory</span>
+<span class="kw">ls</span>
+
+<span class="co"># Show the first few files of a directory (useful if it has many files)</span>
+<span class="kw">ls</span> <span class="kw">|</span> <span class="kw">head</span></code></pre>
+<p>You can also write programmes to do repetetive tasks, like resizing images (the below relies on ImageMagick)</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># -----------------------------------</span>
+<span class="co"># Save the below in a file called resizer.sh in a folder of pictures you want to make smaller</span>
+<span class="co"># -----------------------------------</span>
+
+<span class="kw">mkdir</span> ./small
+<span class="kw">for</span> <span class="kw">file</span> in ./*
+<span class="kw">do</span> <span class="kw">convert</span> <span class="ot">$file</span> -define jpeg:extent=0.3MB ./small/<span class="ot">$file</span>
+<span class="kw">done</span>
+
+<span class="co"># Comments</span>
+<span class="co"># Line 1 creates a sub-directory called small</span>
+<span class="co"># Line 2 lists all the files in the working directory (make sure it only has jpgs)</span>
+<span class="co"># Line 3 makes a copy of Line 2 files in small that are less than 0.5 MB in size</span>
+<span class="co"># Line 4 stops the script</span>
+
+
+<span class="co"># -----------------------------------</span>
+<span class="co"># Run these</span>
+<span class="co"># -----------------------------------</span>
+<span class="kw">cd</span> ~/Picture/folder
+<span class="kw">sh</span> resizer.sh</code></pre>
+<p>I use bash to manage my Linux computers, so I can reinstall all programmes into a fresh build with the minimum of hassle, there’s an example script here: <a href="https://scottishsnow.wordpress.com/software/" class="uri">https://scottishsnow.wordpress.com/software/</a></p>
+</div>
+<div id="programming" class="section level2">
+<h2>Programming</h2>
+</div>
+<div id="spatial-data" class="section level2">
+<h2>Spatial data</h2>
+<div id="gis-qgis-grass" class="section level3">
+<h3>GIS (QGIS, GRASS)</h3>
+</div>
+<div id="gdal-r-gis" class="section level3">
+<h3>GDAL (R, GIS)</h3>
+</div>
+<div id="programming-r" class="section level3">
+<h3>Programming (R)</h3>
+</div>
+</div>
+<div id="databases" class="section level2">
+<h2>Databases</h2>
+</div>
+<div id="writing-markdown-latex" class="section level2">
+<h2>Writing (markdown &amp; LaTeX)</h2>
 </div>
 
 

@@ -23,7 +23,7 @@ This R markdown html is hosted as a github page, you can view the repository her
 
 I'm going to cover a few things in this session and talk about specific tools, these are the ones I use. They're certainly not the only ones available, but they are what I know. If you'd like to talk about other options, advantages and disadvantages drop by and see me in the Grant (rm 400) or [email](http://www.ed.ac.uk/schools-departments/geosciences/people?indv=2920&cw_xml=student.html). So here's what I'll cover:
 
-* File structures
+* File structure
 * Backups (rsync)
 * Version control (git)
 * Command line (bash)
@@ -32,12 +32,13 @@ I'm going to cover a few things in this session and talk about specific tools, t
       + GIS (QGIS, GRASS)
       + GDAL (R, GIS)
       + Programming (R)
+* Databases (SQLite)
 * Writing (markdown & LaTeX)
 
 The key, for me, from these tools is that they help to make your research repeatable. This is really important holistically, but even on a personal level; if you need to make a few changes to a graph, table, paper... then all your analysis can be repeated with the click of a button - you don't have to remember it all in your head!
 
 
-## File structures
+## File structure
 
 I'm not going to say much about this, but do think about it. Having a consistent structure means you always know where to look for something. I wrote some ideas on my blog: https://scottishsnow.wordpress.com/2014/08/28/electronic-organisation-of-projects/
 
@@ -56,6 +57,8 @@ The above example doesn't just work within the school, you can also use it at ho
 ## Version control
 
 When I started using Git it totally revolutionised the way I worked. When I changed documents or code I no longer had to remember to make a copy before a major revision, or hold the previous version in my head when I made a minor revision. Each previous version was managed with a tag saying what I'd done to it. My mind was free to concentrate on what I wanted to achieve, not on avoiding breaking what I had (and not being able to salvage it).
+
+Anything you write in plain text and change should be managed in version control. Most importantly this includes programming code and LaTeX documents. A tip for the latter is put each sentence on a new line, it will make it easier to track what changes. So long as you don't leave empty lines LaTeX will wrap these all to the same paragraph.
 
 There are a few version control software programmes out there. I use Git, it's very widely used and there are a couple of great web hosting facilities for your repositories. The most well known of these is [GitHub](https://github.com/), another is [Bitbucket](https://bitbucket.org/). I think Bitbucket has a better documented and laid out web interface, but this is likely personal preference. The real difference between the two is what you get for free. GitHub allows you to have unlimited collaborators and host webpages (like this one), but charges for private repositories. Bitbucket has free private repositories, but charges for more than 10 people in a team, although it seems this is waived if you sign up with your academic email address. I use GitHub and Bitbucket for different things, I mainly use GitHub for public work and Bitbucket for my research.
 
@@ -86,3 +89,67 @@ git commit -m "what I did"
 # Send to remote repo
 git push
 ```
+
+
+## Command line
+
+
+If you're working with lots of files or big ones the terminal is your friend. You've already used it for managing your version control repos and running backups, but it can do so much more. Here are some examples you might not have covered previously:
+
+```{r bash, engine="bash", eval=F}
+# Download data from a remote ftp
+# This takes files that match the h17v0 string, but that have the number 2 or 3 afterwards.
+# Actual examples for downloading MODIS snow cover satellite images for Scotland.
+lftp -c 'open -e "mirror -I *h17v0[23]*hdf . ." ftp://n5eil01u.ecs.nsidc.org/SAN/MOSA/MYD10A1.005/'
+
+# New directory
+mkdir test
+
+# List files in a directory
+ls
+
+# Show the first few files of a directory (useful if it has many files)
+ls | head
+```
+
+You can also write programmes to do repetetive tasks, like resizing images (the below relies on ImageMagick)
+
+```{r bash images, engine="bash", eval=F}
+# -----------------------------------
+# Save the below in a file called resizer.sh in a folder of pictures you want to make smaller
+# -----------------------------------
+
+mkdir ./small
+for file in ./*
+do convert $file -define jpeg:extent=0.3MB ./small/$file
+done
+
+# Comments
+# Line 1 creates a sub-directory called small
+# Line 2 lists all the files in the working directory (make sure it only has jpgs)
+# Line 3 makes a copy of Line 2 files in small that are less than 0.5 MB in size
+# Line 4 stops the script
+
+
+# -----------------------------------
+# Run these
+# -----------------------------------
+cd ~/Picture/folder
+sh resizer.sh
+```
+
+I use bash to manage my Linux computers, so I can reinstall all programmes into a fresh build with the minimum of hassle, there's an example script here: https://scottishsnow.wordpress.com/software/
+
+## Programming
+
+
+
+## Spatial data
+
+### GIS (QGIS, GRASS)
+### GDAL (R, GIS)
+### Programming (R)
+
+## Databases
+
+## Writing (markdown & LaTeX)
