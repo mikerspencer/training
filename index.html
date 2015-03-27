@@ -249,13 +249,14 @@ img {
 <div id="gdal" class="section level3">
 <h3>GDAL</h3>
 <p>GDAL is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it.</p>
-<p>The example below use R, but it would not take long to convert these to another language. This example:</p>
+<p>When using from a GIS, it’s used to read, write and reproject data primarily. In QGIS and GRASS it’s fairly obviously implemented as these tools are labelled with GDAL! Using via the command line (bash, Python, R, etc.) you’re better able to automate GDAL to process a large number of files.</p>
+<p>The command line example below uses R, but it would not take long to convert these to another language. This example:</p>
 <ul>
 <li>Converts file types (hdf to tif) (gdal_translate)</li>
 <li>Merges pairs of tiles together (gdal_merge)</li>
 <li>Reprojects merged tif to local projection (gdalwarp).</li>
 </ul>
-<p>The example below I developed to convert MODIS snow cover hdf files to tifs and merge the pairs of tiles together, finally converting them to OSGB grid. It loops through 14 years of daily observations by two satellites, processing ~ 18’000 raster images in total.</p>
+<p>I developed this to convert MODIS snow cover hdf files to tifs and merge the pairs of tiles together, finally converting them to OSGB grid. It loops through 14 years of daily observations by two satellites, processing ~ 18’000 raster images in total.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ---------------------------------------</span>
 <span class="co"># Raster merge script</span>
 <span class="co"># ---------------------------------------</span>

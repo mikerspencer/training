@@ -185,13 +185,15 @@ The key is to get familiar with the language and concepts of GIS, don't get bogg
 
 GDAL is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it.
 
-The example below use R, but it would not take long to convert these to another language. This example:
+When using from a GIS, it's used to read, write and reproject data primarily. In QGIS and GRASS it's fairly obviously implemented as these tools are labelled with GDAL! Using via the command line (bash, Python, R, etc.) you're better able to automate GDAL to process a large number of files.
+
+The command line example below uses R, but it would not take long to convert these to another language. This example:
 
 * Converts file types (hdf to tif) (gdal_translate)
 * Merges pairs of tiles together (gdal_merge)
 * Reprojects merged tif to local projection (gdalwarp).
 
-The example below I developed to convert MODIS snow cover hdf files to tifs and merge the pairs of tiles together, finally converting them to OSGB grid. It loops through 14 years of daily observations by two satellites, processing ~ 
+I developed this to convert MODIS snow cover hdf files to tifs and merge the pairs of tiles together, finally converting them to OSGB grid. It loops through 14 years of daily observations by two satellites, processing ~ 
 18'000 raster images in total.
 
 ```{r gdal, eval=F}
