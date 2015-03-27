@@ -181,12 +181,91 @@ The big name in GIS is ESRI who produce ArcGIS/MAP. It's a good thing to have on
 
 The key is to get family with the language and concepts of GIS, don't get bogged down in learning which buttons to press.
 
-### GDAL (R, GIS)
+### GDAL
+
+GDAL is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it with that.
+
+The example below use R, but it would not take long to convert these to another language. This example:
+
+* Converts file types (hdf to tif) (gdal_translate)
+* Merges pairs of tiles together (gdal_merge)
+* Reprojects merged tif to local projection (gdalwarp).
+
+The example below I developed to convert MODIS snow cover hdf files to tifs and merge the pairs of tiles together, finally converting them to OSGB grid. It loops through 14 years of daily observations by two satellites, processing ~ 
+18'000 raster images in total.
+
+```{r gdal merge, eval=F}
+# ---------------------------------------
+# Raster merge script
+# ---------------------------------------
+ 
+# ---------------------------------------
+# Set up
+# ---------------------------------------
+setwd("~/dir/MODIS/data/")
+install.packages(c("rgdal", "raster", "gdalUtils"))
+library(rgdal)
+library(gdalUtils)
+library(raster)
+ 
+# ---------------------------------------
+# Script
+# ---------------------------------------
+ 
+# Find all directories
+d = list.dirs(".", recursive=T, full.names=T)
+d = d[nchar(d)>10]
+ 
+# Define subject area in target projection
+coord = c(048900, 527000, 475000, 1260953.928)
+ 
+# Write hdf to single OSGB tif
+# Set up a timer so you can estimate how long it will take (based on a subset)
+ptm = proc.time()
+# Loop through directories
+lapply(d, function(i){
+   # Progress indicator
+   print(i)
+   # File list
+   f = list.files(i, full.names=T, recursive=T)
+   # Check folder has enough files
+   if(length(f)==2){
+   # Define new file name
+   n = paste0(substr(f[1], 1, 18), substr(f[1], 28, 34))
+   # Process each folder
+   for(j in 1:2){
+      # Convert to tif
+      # use gdal_info to check which hdf layer you need and adjust sd_index
+      gdal_translate(f[j], paste0(n, j, ".tif"), sd_index=1)
+   }
+   # Merge
+   system(paste0("gdal_merge.py ", paste0(n, 1, ".tif"), " ", paste0(n, 2, ".tif"), " -o ", paste0(n, ".tif")))
+   # Reproject to OSGB and clip to subject area
+   gdalwarp(paste0(n, ".tif"), paste0(n, "OSGB", ".tif"), s_srs="+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +a=6371007.181 +b=6371007.181 +units=m +no_defs", t_srs="EPSG:27700", srcnodata=-3000, dstnodata=-3000, te=coord)
+   # Delete mid step tifs
+   f = list.files(i, full.names=T, recursive=T, pattern="tif")
+   # Vary this depending on your directory length and choice of file names
+   f = f[nchar(f)<31]
+   file.remove(f)
+   } else {
+      print("no data")
+   }
+})
+proc.time() - ptm
+rm(ptm)
+```
+
 ### Programming (R)
 
-QGIS and GRASS can both be controlled with Python, and have a built in Python console. GRASS is fully fledged in the terminal, so your bash skills can come in handy! Both can also interact with R.
+QGIS and GRASS (even ArcGIS) can be controlled with Python, and have a built in Python console. GRASS is fully fledged in the terminal, so your bash skills can come in handy! Both can also interact with R, QGIS via a plugin and GRASS via the R package *spgrass6*. I've written about using GRASS and R together here: https://scottishsnow.wordpress.com/2014/08/24/many-rastered-beast/.
+
+You can also use R to undertake GIS like tasks, this gives you the advantage of having your data all ready for statistics, the drawback is that R reads data into RAM, so be careful how big the files are you open! I've written about using R for spatial work here: https://scottishsnow.wordpress.com/2015/02/24/uk-rare-snowmelt-estimation/
 
 ## Databases
+
+I store my primary dataset, the [Snow Survey of Great Britain](https://scottishsnow.wordpress.com/2014/04/09/snow-survey-of-great-britain/) in a small database. It took me ages to get around to doing it, but it's been really useful and I'm now able to do far more work than I could before. I recommend using a database if your data are complex, e.g. time series and or sites. Write a little script to write your incoming data to a database, then it's one task that's a lot easier each month (if that's your sampling period). I'm doing some work for a PhD student in Crew on this at the moment, so please speak to me if you need any pointers.
+
+Have a look at using SQLite, there are packages for Python and R and with an extension you can link it to a GIS. You can even get a [plugin for Firefox](https://addons.mozilla.org/en-Us/firefox/addon/sqlite-manager/) to query your data. Have a look at the example workflow at the bottom of this document to see one in action.
 
 ## Writing (markdown & LaTeX)
 
