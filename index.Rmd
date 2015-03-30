@@ -183,11 +183,17 @@ The key is to get familiar with the language and concepts of GIS, don't get bogg
 
 ### GDAL
 
-GDAL is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it.
+[GDAL](http://www.gdal.org/) is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it.
 
 When using from a GIS, it's used to read, write and reproject data primarily. In QGIS and GRASS it's fairly obviously implemented as these tools are labelled with GDAL! Using via the command line (bash, Python, R, etc.) you're better able to automate GDAL to process a large number of files.
 
-The command line example below uses R, but it would not take long to convert these to another language. This example:
+GDAL can be used with [vector data](http://www.gdal.org/ogr_utilities.html) and [raster data](http://www.gdal.org/gdal_utilities.html). In the following examples I'll show it being used with raster data, as I find these more useful for working with images. Here are the basics for working with raster files:
+
+* [gdal_translate](http://www.gdal.org/gdal_translate.html), for converting raster file formats
+* [gdalwarp](http://www.gdal.org/gdalwarp.html), for reprojecting rasters
+* [gdal_merge](http://www.gdal.org/gdal_merge.html), for mosaicing raster, see also [gdalbuildvrt](http://www.gdal.org/gdalbuildvrt.html).
+
+The script example below shows these tied together in a script using R, but it would not take long to convert these to another language. This example:
 
 * Converts file types (hdf to tif) (gdal_translate)
 * Merges pairs of tiles together (gdal_merge)
@@ -196,7 +202,7 @@ The command line example below uses R, but it would not take long to convert the
 I developed this to convert MODIS snow cover hdf files to tifs and merge the pairs of tiles together, finally converting them to OSGB grid. It loops through 14 years of daily observations by two satellites, processing ~ 
 18'000 raster images in total.
 
-```{r gdal, eval=F}
+```{r gdal example, eval=F}
 # ---------------------------------------
 # Raster merge script
 # ---------------------------------------

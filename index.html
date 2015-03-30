@@ -248,9 +248,15 @@ img {
 </div>
 <div id="gdal" class="section level3">
 <h3>GDAL</h3>
-<p>GDAL is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it.</p>
+<p><a href="http://www.gdal.org/">GDAL</a> is a suit of tools for translating spatial data. Most GIS software uses it (e.g. Arc, QGIS and GRASS do, MapInfo does not). It is written in Python so you can call it natively from there, there are also packages for R to use it.</p>
 <p>When using from a GIS, it’s used to read, write and reproject data primarily. In QGIS and GRASS it’s fairly obviously implemented as these tools are labelled with GDAL! Using via the command line (bash, Python, R, etc.) you’re better able to automate GDAL to process a large number of files.</p>
-<p>The command line example below uses R, but it would not take long to convert these to another language. This example:</p>
+<p>GDAL can be used with <a href="http://www.gdal.org/ogr_utilities.html">vector data</a> and <a href="http://www.gdal.org/gdal_utilities.html">raster data</a>. In the following examples I’ll show it being used with raster data, as I find these more useful for working with images. Here are the basics for working with raster files:</p>
+<ul>
+<li><a href="http://www.gdal.org/gdal_translate.html">gdal_translate</a>, for converting raster file formats</li>
+<li><a href="http://www.gdal.org/gdalwarp.html">gdalwarp</a>, for reprojecting rasters</li>
+<li><a href="http://www.gdal.org/gdal_merge.html">gdal_merge</a>, for mosaicing raster, see also <a href="http://www.gdal.org/gdalbuildvrt.html">gdalbuildvrt</a>.</li>
+</ul>
+<p>The script example below shows these tied together in a script using R, but it would not take long to convert these to another language. This example:</p>
 <ul>
 <li>Converts file types (hdf to tif) (gdal_translate)</li>
 <li>Merges pairs of tiles together (gdal_merge)</li>
