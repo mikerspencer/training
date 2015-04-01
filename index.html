@@ -134,9 +134,16 @@ img {
 </div>
 <div id="backups" class="section level2">
 <h2>Backups</h2>
-<p>Backing up your work is crucial. If you lose everything pity from your colleagues will not help get it back. Hopefully most of you will be working on the school server (adder/m drive), this is backed up. Another option could be that you work on your desktop and backup to the work server. If you do this copying folders across is so 1995. Use backup software like <a href="http://en.wikipedia.org/wiki/Rsync">rsync</a> which scans for changes in files and only copies over what is needed. It’s very fast. Here’s an example that you would run in a bash terminal:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> rsync --delete --exclude=<span class="st">'/.*/'</span> --exclude=<span class="st">'/dir/temp/'</span> -azv -e ssh /home/s1066252 s1066252@adder.geos.ed.ac.uk:/home/s1066252/</code></pre>
-<p>The above example doesn’t just work within the school, you can also use it at home or wherever. Remember to change the student number to your own!</p>
+<p>Backing up your work is crucial. If you lose everything pity from your colleagues will not help get it back. Hopefully most of you will be working on the school server (adder/m drive), this is backed up. Another option could be that you work on your desktop and backup to the work server. If you do this copying folders across is so 1995. Use backup software like <a href="http://en.wikipedia.org/wiki/Rsync">rsync</a> which scans for changes in files and only copies over what is needed. It’s very fast. Here’s some examples that you would run in a bash terminal:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Back up to an external drive</span>
+<span class="kw">rsync</span> -azv /home/username/ /media/username/drivename
+
+<span class="co"># Add other options like:</span>
+<span class="co"># Delete files that no longer exist</span>
+<span class="co"># Exclude certain directories</span>
+<span class="co"># Back up across the network (to adder)</span>
+<span class="kw">rsync</span> --delete --exclude=<span class="st">'/.*/'</span> --exclude=<span class="st">'/dir/temp/'</span> -azv -e ssh /home/s1066252 s1066252@adder.geos.ed.ac.uk:/home/s1066252/</code></pre>
+<p>The above example doesn’t just work within the school, you can also use it at home or wherever. Remember to change the student number to your own! For more settings and options see: <a href="http://linux.about.com/library/cmd/blcmdl1_rsync.htm">rsync manual</a>.</p>
 </div>
 <div id="version-control" class="section level2">
 <h2>Version control</h2>
@@ -336,6 +343,7 @@ ptm =<span class="st"> </span><span class="kw">proc.time</span>()
 <div id="writing" class="section level2">
 <h2>Writing</h2>
 <p>Science isn’t complete until you communicate it. As the process evolves, there are many different mediums available to us (blogs, papers, magazines…), but as PhD students we will always have to produce a thesis! Having written using Word for many years of undergrad and employment, it’s been a breath of fresh air using <a href="en.wikipedia.org/wiki/LaTeX">LaTeX</a> for my written work since beginning my PhD. It takes the stress out of structuring your documents and is much quicker to write as you’re not distracted by how it looks. There’s a bit of a learning curve, but it’s well worth it.</p>
+<p>For tips on using LaTeX with version control see this answer on <a href="http://stackoverflow.com/a/6190412/2773500">stackoverflow</a>.</p>
 <p>As I mentioned earlier, try and complete your data analysis in R markdown or Python notebooks. It will be a lot easier when you review what you’ve done.</p>
 <p>Consider keeping a blog, it helps you write and it’s a good place to record things when you figure out something new. In the bigger picture they’re a good place to advertise papers as well!</p>
 </div>
